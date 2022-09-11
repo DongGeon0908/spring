@@ -33,15 +33,14 @@ class RedisConfig(
     @ConditionalOnClass(RedisConnectionFactory::class)
     @ConditionalOnMissingBean(RedisTemplate::class)
     fun redisTemplate(): RedisTemplate<String, Any> {
-        val redisTemplate: RedisTemplate<String, Any> = RedisTemplate()
-        redisTemplate.setConnectionFactory(redisConnectionFactory())
-
-        redisTemplate.keySerializer = StringRedisSerializer()
-        redisTemplate.valueSerializer = GenericJackson2JsonRedisSerializer()
-        redisTemplate.hashKeySerializer = StringRedisSerializer()
-        redisTemplate.hashValueSerializer = GenericJackson2JsonRedisSerializer()
-
-        return redisTemplate
+        return RedisTemplate<String, Any>()
+            .apply {
+                this.setConnectionFactory(redisConnectionFactory())
+                this.keySerializer = StringRedisSerializer()
+                this.valueSerializer = GenericJackson2JsonRedisSerializer()
+                this.hashKeySerializer = StringRedisSerializer()
+                this.hashValueSerializer = GenericJackson2JsonRedisSerializer()
+            }
     }
 
     @Bean
